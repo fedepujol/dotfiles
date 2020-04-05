@@ -16,14 +16,7 @@
 ;==========================================================
 ;========================= COLORS =========================
 ;==========================================================
-[colors]
-background = #222
-background-alt = #444
-foreground = #dfdfdf
-foreground-alt = #555
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+include-file = ~/.config/polybar/colors.ini
 
 ;==========================================================
 ;========================== BARS ==========================
@@ -31,8 +24,8 @@ alert = #bd2c40
 [bar/example]
 #monitor = ${env:MONITOR:fallback-value}
 width = 100%
-height = 25
-radius = 3.0
+height = 45
+radius = 6.0
 fixed-center = false
 
 background = ${colors.background}
@@ -41,24 +34,26 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 4
+border-size = 0
 border-color = #00000000
 
 padding-left = 0
-padding-right = 2
+padding-right = 4
 
-module-margin-left = 1
-module-margin-right = 2
+module-margin-left = 3
+module-margin-right = 3
 
-font-0 = fixed:pixelsize=10;1
-font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = siji:pixelsize=10;1
+font-0 = "Ubuntu Nerd Font:style=Regular:size=12:antialias=true;1"
+font-1 = "Weather Icons:size=18;1"
+font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=8;1"
+font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
+font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 
-modules-left = bspwm
-modules-right = filesystem xbacklight pulseaudio xkeyboard memory cpu wlan battery date powermenu
+modules-left = bspwm xwindow
+modules-right = xkeyboard pulseaudio wlan battery backlight date powermenu
 
 tray-position = right
-tray-padding = 2
+tray-padding = 5
 
 wm-restack = bspwm
 
@@ -73,7 +68,8 @@ cursor-scroll = ns-resize
 ;==========================================================
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+format-prefix = "  "
+label = %title:0:64:...%
 
 ;==========================================================
 ;======================== Keyboard ========================
@@ -291,31 +287,20 @@ label = %date% %time%
 ;==========================================================
 [module/pulseaudio]
 type = internal/pulseaudio
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+use-ui-max = true
+interval = 5
+format-volume = <ramp-volume> <label-volume>
 
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
-label-volume-foreground = ${root.foreground}
+label-muted = ﱝ
 
-label-muted = 🔇 muted
-label-muted-foreground = #666
+; Only applies if <ramp-volume> is used
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
 
-bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 2
-bar-volume-fill = ─
-bar-volume-fill-font = 2
-bar-volume-empty = ─
-bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground-alt}
-
+; Right and Middle click (unreleased)
+click-right = pavucontrol &
 ;==========================================================
 ;========================= BATTERY ========================
 ;==========================================================
@@ -358,14 +343,12 @@ animation-discharging-framerate = 750
 [module/powermenu]
 type = custom/menu
 
-expand-right = true
-
 format-spacing = 1
 
-label-open = 
-label-open-foreground = ${colors.secondary}
-label-close =  cancel
-label-close-foreground = ${colors.secondary}
+label-open = 
+label-open-foreground = ${colors.foreground}
+label-close = cancel
+label-close-foreground = ${colors.primary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
@@ -377,10 +360,10 @@ menu-0-1-exec = menu-open-2
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
 menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = reboot
 
 menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
+menu-2-0-exec = poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
 
@@ -396,5 +379,5 @@ screenchange-reload = true
 ;pseudo-transparency = false
 
 [global/wm]
-margin-top = 5
-margin-bottom = 5
+margin-top = 0
+margin-bottom = 0
