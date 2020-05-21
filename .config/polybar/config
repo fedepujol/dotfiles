@@ -21,14 +21,14 @@ include-file = ~/.config/polybar/colors.ini
 ;==========================================================
 ;========================== BARS ==========================
 ;==========================================================
-[bar/example]
+[bar/bar1]
 #monitor = ${env:MONITOR:fallback-value}
 width = 100%
 height = 25
 radius = 6.0
 fixed-center = false
 
-background = ${colors.background}
+background = ${colors.background-alt}
 foreground = ${colors.foreground}
 
 line-size = 3
@@ -40,16 +40,17 @@ border-color = #00000000
 padding-left = 0
 padding-right = 4
 
-module-margin-left = 3
-module-margin-right = 3
+module-margin-left = 2
+module-margin-right = 2
 
-font-0 = "Ubuntu Nerd Font:style=Regular:size=10:antialias=true;1"
+font-0 = "Ubuntu Nerd Font:style=Solid:size=10:antialias=true;1"
 font-1 = "Font Awesome 5 Free:style=Regular:pixelsize=8;1"
 font-2 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
 font-3 = "Font Awesome 5 Brands:pixelsize=8;1"
 
-modules-left = bspwm xwindow
-modules-right = xbacklight wlan pulseaudio xkeyboard battery date powermenu
+modules-left = bspwm
+modules-center = xwindow
+modules-right = wlan backlight-acpi pulseaudio xkeyboard date battery powermenu
 
 tray-position = right
 tray-padding = 5
@@ -108,12 +109,12 @@ label-unmounted-foreground = ${colors.foreground-alt}
 [module/bspwm]
 type = internal/bspwm
 
-ws-icon-0 = I;"1"
-ws-icon-1 = II;"2"
-ws-icon-2 = III;"3"
-ws-icon-3 = IV;"4"
-ws-icon-4 = V;"5"
-ws-icon-5 = VI;"6"
+ws-icon-0 = I;
+ws-icon-1 = II;
+ws-icon-2 = III;
+ws-icon-3 = IV;
+ws-icon-4 = V;
+ws-icon-5 = VI;
 
 pin-workspaces = true
 
@@ -129,7 +130,7 @@ fuzzy-match = true
 
 format = <label-state> <label-mode>
 
-label-monitor = %name%
+label-monitor = %icon%
 
 label-focused = %name%
 label-focused-background = ${colors.background-alt}
@@ -159,18 +160,18 @@ label-separator-foreground = #ffb52a
 ;==========================================================
 ;=========================== MPD ==========================
 ;==========================================================
-[module/mpd]
-type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
-
-icon-prev = "玲 "
-icon-stop = "栗 "
-icon-play = "契 "
-icon-pause = " "
-icon-next = "怜 "
-
-label-song-maxlen = 25
-label-song-ellipsis = true
+;[module/mpd]
+;type = internal/mpd
+;format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+;
+;icon-prev = "玲 "
+;icon-stop = "栗 "
+;icon-play = "契 "
+;icon-pause = " "
+;icon-next = "怜 "
+;
+;label-song-maxlen = 25
+;label-song-ellipsis = true
 
 ;==========================================================
 ;======================= BackLight ========================
@@ -195,25 +196,25 @@ card = intel_backlight
 ;==========================================================
 ;=========================== CPU ==========================
 ;==========================================================
-[module/cpu]
-type = internal/cpu
-interval = 2
-format-prefix = "﬙ "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
-format = <label> <ramp-coreload>
-label = CPU
+;[module/cpu]
+;type = internal/cpu
+;interval = 2
+;format-prefix = "﬙ "
+;format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = #f90000
+;format = <label> <ramp-coreload>
+;label = CPU
 
 ;==========================================================
 ;========================= MEMORY =========================
 ;==========================================================
-[module/memory]
-type = internal/memory
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
-label = %percentage_used%%
+;[module/memory]
+;type = internal/memory
+;interval = 2
+;format-prefix = " "
+;format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = #4bffdc
+;label = %percentage_used%%
 
 ;==========================================================
 ;========================== WIFI ==========================
@@ -226,11 +227,11 @@ interval = 3.0
 format-connected = <label-connected>
 format-connected-underline = #9f78e1
 
-label-connected = "直 "
+label-connected = "直"
 
 format-disconnected = <label-disconnected>
 
-label-disconnected = "睊 "
+label-disconnected = "睊"
 ;==========================================================
 ;========================== ETH ===========================
 ;==========================================================
@@ -255,9 +256,9 @@ format-disconnected =
 ;==========================================================
 [module/date]
 type = internal/date
-interval = 5
+interval = 1
 
-date = 
+date = " %d/%m/%Y"
 date-alt = " %Y-%m-%d"
 
 time = %H:%M:%S
@@ -266,7 +267,7 @@ format-prefix =
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #0a6cf5
 
-label = %date% %time%
+label =  %date%   %time%
 
 ;==========================================================
 ;======================= PULSEAUDIO =======================
@@ -281,7 +282,7 @@ format-volume = <ramp-volume> <label-volume>
 label-muted = 
 
 ; Only applies if <ramp-volume> is used
-ramp-volume-0 = 
+ramp-volume-0 = 
 ramp-volume-1 = 墳
 ramp-volume-2 = 
 
@@ -294,7 +295,7 @@ click-right = pavucontrol &
 type = internal/battery
 battery = BAT0
 adapter = AC0
-full-at = 98
+full-at = 100
 
 format-charging = <animation-charging> <label-charging>
 format-charging-underline = #ffb52a
@@ -306,11 +307,7 @@ format-full-prefix = " "
 format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${self.format-charging-underline}
 
-animation-charging-0 = " "
-animation-charging-1 = " "
-animation-charging-2 = " "
-animation-charging-3 = " "
-animation-charging-4 = " "
+animation-charging-0 = " "
 animation-charging-foreground = ${colors.foreground-alt}
 animation-charging-framerate = 750
 
@@ -332,24 +329,24 @@ format-spacing = 1
 
 label-open = 
 label-open-foreground = ${colors.foreground}
-label-close = cancel
+label-close = 
 label-close-foreground = ${colors.primary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
-menu-0-0 = reboot
+menu-0-0 = Reboot
 menu-0-0-exec = menu-open-1
-menu-0-1 = power off
+menu-0-1 = Shutdown
 menu-0-1-exec = menu-open-2
 
-menu-1-0 = cancel
+menu-1-0 = Cancel
 menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
+menu-1-1 = Reboot
 menu-1-1-exec = reboot
 
-menu-2-0 = power off
+menu-2-0 = Shutdown
 menu-2-0-exec = poweroff
-menu-2-1 = cancel
+menu-2-1 = Cancel
 menu-2-1-exec = menu-open-0
 
 ;==========================================================
