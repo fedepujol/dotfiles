@@ -5,7 +5,7 @@
 #####################################
 sxhkd &
 sh $HOME/.config/polybar/launch.sh
-
+feh --bg-fill $HOME/Pictures/wallpaper/wallpaper_01.jpg &
 
 #####################################
 ###        Monitor Section        ###

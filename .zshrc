@@ -104,15 +104,40 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh
+
+# Dir Navigation
 alias ls="exa -la --git"
 alias ll="exa -l --git"
 alias ..="cd .."
+
+# Configs
+alias u-conf="cd $HOME/.config"
+alias u-opt-conf="cd /etc/optimus-manager/"
+
+# Dirs
+alias u-wrk="cd $HOME/workspace"
+alias u-dwl="cd $HOME/Downloads"
+alias u-doc="cd $HOME/Documents"
+
+# Pacman
 alias pinstall="sudo pacman -Syu"
 alias premove="sudo pacman -Runs"
 alias psearch="sudo pacman -Ss"
+
+# AUR
 alias aurinst="yay -Syu"
 alias aurfind="yay -Ss"
 
+# Logs
+alias dirlog="cd /var/log/"
+alias Xerrors="cat /var/log/Xorg.0.log | grep EE"
+alias Xwarns="cat /var/log/Xorg.0.log | grep WW"
+alias Xinfo="cat /var/log/Xorg.0.log | grep II"
+
+# Utils
+alias mmine="sudo chown fedepujol:users"
+alias mminer="sudo chown -R fedepujol:users"
+alias cpall="cp -r"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

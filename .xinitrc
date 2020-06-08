@@ -40,5 +40,9 @@ fi
 
 xsetroot -cursor_name left_ptr
 
+# optimus-manager config
+exec /usr/bin/prime-offload &
+
+# windom manager config
 sxhkd &
 exec bspwm
