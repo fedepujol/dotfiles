@@ -123,6 +123,8 @@ alias u-doc="cd $HOME/Documents"
 alias pinstall="sudo pacman -Syu"
 alias premove="sudo pacman -Runs"
 alias psearch="sudo pacman -Ss"
+alias lorphans="sudo pacman -Qtd"
+alias doihave="sudo pacman -Qs"
 
 # AUR
 alias aurinst="yay -Syu"
