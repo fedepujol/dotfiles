@@ -135,8 +135,6 @@ alias Xwarns="cat /var/log/Xorg.0.log | grep WW"
 alias Xinfo="cat /var/log/Xorg.0.log | grep II"
 
 # Utils
-alias mmine="sudo chown fedepujol:users"
-alias mminer="sudo chown -R fedepujol:users"
 alias cpall="cp -r"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
