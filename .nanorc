@@ -73,13 +73,13 @@
 ## The opening and closing brackets that can be found by bracket
 ## searches.  They cannot contain blank characters.  The former set must
 ## come before the latter set, and both must be in the same order.
-# set matchbrackets "(<[{)>]}"
+set matchbrackets "(<[{)>]}"
 
 ## Enable mouse support, if available for your system.  When enabled,
 ## mouse clicks can be used to place the cursor, set the mark (with a
 ## double click), and execute shortcuts.  The mouse will work in the X
 ## Window System, and on the console when gpm is running.
-# set mouse
+set mouse
 
 ## Switch on multiple file buffers (inserting a file will put it into
 ## a separate buffer).
@@ -154,7 +154,7 @@
 ## (The old form of this option, 'set suspend', is deprecated.)
 
 ## Use this tab size instead of the default; it must be greater than 0.
-# set tabsize 8
+set tabsize 4 
 
 ## Convert typed tabs to spaces.
 # set tabstospaces
@@ -200,14 +200,14 @@
  set keycolor cyan
  set functioncolor green
 ## In root's .nanorc you might want to use:
-# set titlecolor brightwhite,magenta
-# set statuscolor brightwhite,magenta
-# set errorcolor brightwhite,red
-# set selectedcolor brightwhite,cyan
-# set stripecolor ,yellow
-# set numbercolor magenta
-# set keycolor brightmagenta
-# set functioncolor magenta
+ set titlecolor brightwhite,magenta
+ set statuscolor brightwhite,magenta
+ set errorcolor brightwhite,red
+ set selectedcolor brightwhite,cyan
+ set stripecolor ,yellow
+ set numbercolor magenta
+ set keycolor brightmagenta
+ set functioncolor magenta
 
 
 ## Setup of syntax coloring.
