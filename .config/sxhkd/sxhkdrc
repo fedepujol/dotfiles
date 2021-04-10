@@ -8,12 +8,40 @@ super + Return
 
 # program launcher
 super + @space
-#	dmenu_run
 	$HOME/.config/bspwm/dmenu.sh
 
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
+
+#
+# Sound
+#
+
+# Increase +5
+XF86AudioRaiseVolume
+	amixer set Master 5%+
+
+# Decrease +5
+XF86AudioLowerVolume
+	amixer set Master 5%-
+
+# Mute
+XF86AudioMute
+	amixer set Master toggle
+
+#
+# Backlight
+#
+
+# Increase +5%
+XF86MonBrightnessUp
+	python $HOME/workspace/python/xbacli/xbacli.py -inc 5
+
+# Decrease -5%
+XF86MonBrightnessDown
+	python $HOME/workspace/python/xbacli/xbacli.py -dec 5
+
 
 #
 # bspwm hotkeys
@@ -23,9 +51,13 @@ super + Escape
 super + alt + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
-super + {_,shift + }w
-	bspc node -{c,k}
+# Close Window
+super + shift + c
+	bspc node -c
+
+# Kill Window
+super + shift + k
+	bspc node -k
 
 # alternate between the tiled and monocle layout
 super + m
@@ -124,5 +156,11 @@ super + {Left,Down,Up,Right}
 #
 # move to another desktop
 #
-super + control + {1-6}
+super + ctrl + alt + {1-6}
 	bspc node -d '^{1-6}' --follow
+
+#
+# Lockscreen
+#
+ctrl + alt + l
+	xscreensaver-command -lock

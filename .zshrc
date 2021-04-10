@@ -28,6 +28,7 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias u-conf='cd /home/fedepujol/.config'
  alias u-docs='cd /home/fedepujol/Documents'
  alias u-dwnl='cd /home/fedepujol/Downloads'
+ alias workspace='cd /home/fedepujol/workspace'
  alias logs='cd /var/log'
 
 # Command Aliases
@@ -35,12 +36,13 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias cp='cp -i'
  alias rm='rm -i'
  alias grep='grep --color=always'
- alias cat='bat'
- alias ls='exa -la --git'
+ alias lx='exa -la --group-directories-first --git'
  alias l='ls -alh --color=always'
- alias ll='exa -l --git'
- alias ubb='bleachbit -c system.localizations system.cache system.tmp system.trash'
- alias subb='sudo bleachbit -c system.rotated_logs system.localizations system.cache system.tmp system.trash'
+ alias ll='ls -a --group-directories-first --color=always'
+ alias bbp='bleachbit -p system.tmp system.cache system.trash system.localizations vim.history firefox.backup firefox.cache firefox.cookies firefox.crash_reports firefox.dom firefox.forms firefox.passwords firefox.session_restore firefox.site_preferences firefox.url_history firefox.vacuum bash.history'
+ alias bbpr='sudo bleachbit -p system.tmp system.cache system.trash system.localizations system.rotated_logs system.clipboard vim.history bash.history'
+ alias bbu='bleachbit -c system.tmp system.cache system.trash system.localizations vim.history firefox.backup firefox.cache firefox.cookies firefox.crash_reports firefox.dom firefox.forms firefox.passwords firefox.session_restore firefox.site_preferences firefox.url_history firefox.vacuum bash.history'
+ alias bbr='sudo bleachbit -c system.tmp system.cache system.trash system.localizations system.rotated_logs system.clipboard vim.history bash.history'
  alias nnn='nnn -d -U -H'
 
 # Package Aliases
@@ -52,9 +54,9 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias aurinst='yay -Syu'
 
 # Config Aliases
- alias shortcuts='cat /home/fedepujol/.config/sxhkd/sxhkdrc'
- alias aliases='vim /home/fedepujol/.zshrc'
- alias vim-conf='vim /home/fedepujol/.vimrc'
+ alias shortcuts='nvim /home/fedepujol/.config/sxhkd/sxhkdrc'
+ alias aliases='nvim /home/fedepujol/.zshrc'
+ alias nvim-conf='nvim /home/fedepujol/.conf/nvim/init.vim'
 
 # Services Aliases
  alias systat='sudo systemctl status'
@@ -63,3 +65,7 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias sysena='sudo systemctl enable'
  alias sysdis='sudo systemctl disable'
  alias syfail='sudo systemctl --state=failed'
+
+# Source files
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

@@ -6,8 +6,8 @@
 sxhkd &
 picom &
 sh $HOME/.config/polybar/launch.sh &
-sh $HOME/.config/pscircle/genwall.sh &
-feh --bg-fill $HOME/ps.jpg &
+nitrogen --restore &
+xscreensaver -no-splash &
 
 #####################################
 ###        Monitor Section        ###
