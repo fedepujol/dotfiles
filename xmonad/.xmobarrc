@@ -1,0 +1,47 @@
+Config {
+    -- Appearance
+    font =              "xft:Fira Code Retina:size=9:bold:antialias=true",
+    bgColor =           "#161616",
+    fgColor =           "#FFFFFF",
+    position =          Top,
+    border =            BottomB,
+    borderColor =       "#646464",
+
+    -- General Behaviour
+    lowerOnStart =      True,       -- Send to bottom of window stack on start
+    hideOnStart =       False,      -- Start with window unmapped (hidden)
+    allDesktops =       True,       -- Show on all desktops
+    overrideRedirect =  True,       -- Set the override redirect flag (XLib)
+    pickBroadest =      False,      -- Choose widest display (Multi-Monitor)
+    persistent =        True,       -- Enable/Disable hiding
+
+    -- Plugins
+    --   Numbers can be automatically colored according to their value. xmobar
+    --   decides color based on a three-tier/two-cutoff system, controlled by
+    --   command options:
+    --     --Low sets the low cutoff
+    --     --High sets the high cutoff
+    --
+    --     --low sets the color below --Low cutoff
+    --     --normal sets the color between --Low and --High cutoffs
+    --     --High sets the color above --High cutoff
+    --
+    --   The --template option controls how the plugin is displayed. Text
+    --   color can be set by enclosing in <fc></fc> tags. For more details
+    --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
+    commands = [
+		-- Time and Date
+		Run Date 			"<fc=#F1FA8C>%F %T</fc>" "date" 10,
+		-- Keyboard Layout
+		Run Kbd 			[ 	("es(qwerty)", "<fc=#00008B>QT</fc>"),
+								("us", "<fc=#8B0000>US</fc>")
+							],
+		Run UnsafeStdinReader,
+		Run Com "uname" ["-r"] "" 3600
+	],
+
+    -- Layout
+    sepChar =   "%",        -- Delineator between plugin names and straight text
+    alignSep =  "}{",       -- Separator between left-right alignment
+    template =  "%UnsafeStdinReader% | %kbd% }{ %uname% | %date% "
+}
