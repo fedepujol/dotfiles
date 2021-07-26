@@ -25,10 +25,10 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias ..='cd ..'
  alias ...='cd ../../'
  alias 3..='cd ../../../'
- alias u-conf='cd /home/fedepujol/.config'
- alias u-docs='cd /home/fedepujol/Documents'
- alias u-dwnl='cd /home/fedepujol/Downloads'
- alias workspace='cd /home/fedepujol/workspace'
+ alias u-conf='cd ~/.config'
+ alias u-docs='cd ~/Documents'
+ alias u-dwnl='cd ~/Downloads'
+ alias workspace='cd ~/workspace'
  alias logs='cd /var/log'
 
 # Command Aliases
@@ -54,9 +54,9 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
  alias aurinst='yay -Syu'
 
 # Config Aliases
- alias shortcuts='nvim /home/fedepujol/.config/sxhkd/sxhkdrc'
- alias aliases='nvim /home/fedepujol/.zshrc'
- alias nvim-conf='nvim /home/fedepujol/.conf/nvim/init.vim'
+ alias shortcuts='nvim ~/.config/sxhkd/sxhkdrc'
+ alias aliases='nvim ~/.zshrc'
+ alias nvim-conf='nvim ~/.conf/nvim'
 
 # Services Aliases
  alias systat='sudo systemctl status'
