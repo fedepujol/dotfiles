@@ -1,6 +1,6 @@
 Config {
     -- Appearance
-    font =              "xft:Fira Code Retina:size=9:bold:antialias=true",
+    font =              "xft:Ubuntu Nerd Font:size=12:antialias=true",
     bgColor =           "#161616",
     fgColor =           "#FFFFFF",
     position =          Top,
@@ -37,11 +37,13 @@ Config {
 								("us", "<fc=#8B0000>US</fc>")
 							],
 		Run UnsafeStdinReader,
-		Run Com "uname" ["-r"] "" 3600
+		Run Com "uname" ["-r"] "" 3600,
+		Run Alsa "default" "Master" [],
+        Run Locks
 	],
 
     -- Layout
     sepChar =   "%",        -- Delineator between plugin names and straight text
     alignSep =  "}{",       -- Separator between left-right alignment
-    template =  "%UnsafeStdinReader% | %kbd% }{ %uname% | %date% "
+    template =  "%UnsafeStdinReader% | %kbd% }{ %alsa:default:Master% %uname% | %date% "
 }
