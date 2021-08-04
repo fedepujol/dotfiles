@@ -1,6 +1,9 @@
 -- Imports
+-- General
 import XMonad
 import qualified XMonad.StackSet    as W
+import System.IO
+import System.Exit
 
 -- Actions
 import XMonad.Actions.WorkspaceNames
@@ -10,7 +13,7 @@ import Data.Monoid
 import qualified Data.Map  as M
 
 -- Utils
-import XMonad.Util.EZConfig(additionalKeysP)
+import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Loggers
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
@@ -18,18 +21,17 @@ import XMonad.Util.SpawnOnce
 -- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
--- import XMonad.Hooks.EwmhDesktops
 
 -- Layouts
+import XMonad.Layout.Tabbed
+import XMonad.Layout.TwoPane
+import XMonad.Layout.ThreeColumns
+import XMonad.Layout.Grid
+
+-- Layout Modifiers
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
-import XMonad.Layout.TwoPane
-import XMonad.Layout.Tabbed
 import XMonad.Layout.Spacing
-
--- IO
-import System.IO
-import System.Exit
 
 --------------------------------------------------------------------------------------
 -- Override defaults for XMonad
@@ -83,11 +85,15 @@ lowWhite   = xmobarColor "#BBBBBB" ""
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 myStartupHook = do
-   spawnOnce "nitrogen --restore"
+   spawnOnce "~/.fehbg &"
+   -- spawnOnce "nitrogen --restore &"
 
 --------------------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove here.
 myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
+    -- Launch Terminal
+    ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf),
+
     -- Launch DMenu
     ((modm, xK_p), spawn "~/.config/bspwm/dmenu.sh"),
 
@@ -154,6 +160,15 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..],
           (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+myAddKeys :: [(String, X())]
+myAddKeys = [
+    ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"),
+    ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"),
+    ("<XF86AudioMute>", spawn "amixer -q set Master toggle"),
+    ("<XF86MonBrightnessUp>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -inc 5"),
+    ("<XF86MonBrightnessDown>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -dec 5")]
+
 --------------------------------------------------------------------------------------
 -- Layouts
 
@@ -212,9 +227,9 @@ main = do
                  ppVisible = wrap (white "") (white ""),
                  ppHidden = lowWhite . wrap "(" ")",
                  ppHiddenNoWindows = blue . wrap " " "",
-                 ppTitle = xmobarColor "green" "" . shorten 50,
+                 ppTitle = xmobarColor "white" "" . shorten 50,
                  ppSep = magenta " * ",
-                 ppUrgent = red . wrap (yellow "!") (yellow "!")
+                 ppUrgent = red . wrap (red "!") (red "!")
              },
          keys = myKeys,
          workspaces = myWorkspaces,
@@ -224,9 +239,4 @@ main = do
          focusedBorderColor = focusedBColor,
          normalBorderColor = normalBColor,
          borderWidth = border
-    } `additionalKeysP` [("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"),
-                        ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"),
-                        ("<XF86AudioMute>", spawn "amixer -q set Master toggle"),
-                        ("<XF86MonBrightnessUp>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -inc 5"),
-                        ("<XF86MonBrightnessDown>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -dec 5")
-                        ]
+    } `additionalKeysP` myAddKeys
