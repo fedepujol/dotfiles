@@ -1,8 +1,0 @@
-[ 12/24/2020 19:14:50.190 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 02/03/2021 06:34:15.905 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 03/06/2021 15:44:02.544 x_fetch_region ERROR ] Failed to fetch rectangles (No error)
-[ 03/16/2021 00:37:17.499 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 03/27/2021 19:56:55.827 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 04/02/2021 02:25:22.211 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 04/08/2021 23:56:29.821 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
-[ 04/09/2021 23:41:46.017 handle_queued_x_events FATAL ERROR ] X11 server connection broke (error 1)
