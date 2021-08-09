@@ -1,9 +1,51 @@
+# Enviroment Variables
+# Defaults in case they're not set up
+if [[ -z "$XDG_DATA_HOME" ]]; then
+    export XDG_DATA_HOME="$HOME/.local/share"
+fi
+
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+    export XDG_CONFIG_HOME="$HOME/.config"
+fi
+
+if [[ -z "$XDG_CACHE_HOME" ]]; then
+    export XDG_CACHE_HOME="$HOME/.cache"
+fi
+
+# Set editor to NeoVim
+export EDITOR='nvim'
+
+# Define zsh directory
+export ZSH_HOME="$XDG_CONFIG_HOME/zsh"
+
+# Source configuration files
+# functions.zsh -> Common functions
+# alias.zsh -> Usefull aliases
+[ -f $ZSH_HOME/functions.zsh ] && source $ZSH_HOME/functions.zsh
+[ -f $ZSH_HOME/alias.zsh ] && source $ZSH_HOME/alias.zsh
+
+# ZSh Config
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt nomatch
-unsetopt autocd beep extendedglob notify
+
+setopt histignorealldups    # Subsitute commands in the prompt
+setopt sharehistory         # Share history with other shells
+setopt nonomatch            # Avoid zsh no matches found
+setopt appendhistory        # Append history list to history file
+setopt hist_reduce_blanks   # Remove blank lines from history
+setopt hist_ignore_all_dups # Remove all duplicates from history
+setopt nobeep               # Avoid beeping
+setopt extended_glob        # Extended globbing
+setopt extended_history     #
+setopt notify               # Report the status of background jobs
+setopt autocd               # Change to directory without "cd"
+setopt longlistjobs         # Display PID when suspending processes
+setopt hash_list_all        # When command completion is attempted, make sure the entire command path is hashed first.
+setopt completeinword       # Complete at any position of the line
+setopt auto_param_slash     # Append a slash if complettion target was a directory
 
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
@@ -19,53 +61,5 @@ bindkey -v
 # Prompt
 PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
 
-### Aliases
-
-# File System Aliases
- alias ..='cd ..'
- alias ...='cd ../../'
- alias 3..='cd ../../../'
- alias u-conf='cd ~/.config'
- alias u-docs='cd ~/Documents'
- alias u-dwnl='cd ~/Downloads'
- alias workspace='cd ~/workspace'
- alias logs='cd /var/log'
-
-# Command Aliases
- alias mv='mv -i'
- alias cp='cp -i'
- alias rm='rm -i'
- alias grep='grep --color=always'
- alias lx='exa -la --group-directories-first --git'
- alias l='ls -alh --color=always'
- alias ll='ls -a --group-directories-first --color=always'
- alias bbp='bleachbit -p system.tmp system.cache system.trash system.localizations vim.history firefox.backup firefox.cache firefox.cookies firefox.crash_reports firefox.dom firefox.forms firefox.passwords firefox.session_restore firefox.site_preferences firefox.url_history firefox.vacuum bash.history'
- alias bbpr='sudo bleachbit -p system.tmp system.cache system.trash system.localizations system.rotated_logs system.clipboard vim.history bash.history'
- alias bbu='bleachbit -c system.tmp system.cache system.trash system.localizations vim.history firefox.backup firefox.cache firefox.cookies firefox.crash_reports firefox.dom firefox.forms firefox.passwords firefox.session_restore firefox.site_preferences firefox.url_history firefox.vacuum bash.history'
- alias bbr='sudo bleachbit -c system.tmp system.cache system.trash system.localizations system.rotated_logs system.clipboard vim.history bash.history'
- alias nnn='nnn -d -U -H'
-
-# Package Aliases
- alias pinstall='sudo pacman -Syu'
- alias psearch='sudo pacman -Ss'
- alias premove='sudo pacman -Runs'
- alias orphans='sudo pacman -Qtd'
- alias aurfind='yay -Ss'
- alias aurinst='yay -Syu'
-
-# Config Aliases
- alias shortcuts='nvim ~/.config/sxhkd/sxhkdrc'
- alias aliases='nvim ~/.zshrc'
- alias nvim-conf='nvim ~/.conf/nvim'
-
-# Services Aliases
- alias systat='sudo systemctl status'
- alias systop='sudo systemctl stop'
- alias sysbeg='sudo systemctl start'
- alias sysena='sudo systemctl enable'
- alias sysdis='sudo systemctl disable'
- alias syfail='sudo systemctl --state=failed'
-
 # Source files
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
+ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
