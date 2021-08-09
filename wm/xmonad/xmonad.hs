@@ -85,8 +85,7 @@ lowWhite   = xmobarColor "#BBBBBB" ""
 -- It will add initialization of EWMH support to your custom startup
 -- hook by combining it with ewmhDesktopsStartup.
 myStartupHook = do
-   spawnOnce "~/.fehbg &"
-   -- spawnOnce "nitrogen --restore &"
+   spawnOnce "nitrogen --restore &"
 
 --------------------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove here.
@@ -235,6 +234,7 @@ main = do
          workspaces = myWorkspaces,
          manageHook = myManageHook,
          modMask = myModMask,
+         startupHook = myStartupHook,
          terminal = myTerminal,
          focusedBorderColor = focusedBColor,
          normalBorderColor = normalBColor,
