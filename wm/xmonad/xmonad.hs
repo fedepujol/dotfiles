@@ -1,3 +1,4 @@
+{-#LANGUAGE NoMonomorphismRestriction #-}
 -- Imports
 -- General
 import XMonad
@@ -7,6 +8,7 @@ import System.Exit
 
 -- Actions
 import XMonad.Actions.WorkspaceNames
+import XMonad.Actions.GridSelect(GSConfig, goToSelected, gs_cellheight, gs_cellwidth, gs_font)
 
 -- Data
 import Data.Monoid
@@ -23,7 +25,6 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 
 -- Layouts
-import XMonad.Layout.Tabbed
 import XMonad.Layout.TwoPane
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
@@ -31,9 +32,18 @@ import XMonad.Layout.Grid
 -- Layout Modifiers
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
-import XMonad.Layout.Spacing
+import XMonad.Layout.Spacing as SP
+
+-- Prompt
+import XMonad.Prompt as Pmpt
+import XMonad.Prompt.XMonad(xmonadPrompt)
+import XMonad.Prompt.Man
 
 --------------------------------------------------------------------------------------
+-- Constants
+myFont :: String
+myFont = "xft:Ubuntu Nerd Font:size=12:antialias=true"
+
 -- Override defaults for XMonad
 
 -- By Default is XTerm
@@ -60,16 +70,42 @@ focusedBColor = "#1F3D7E"
 
 -- List of workspaces
 myWorkspaces :: [String]
-myWorkspaces = ["main", "www", "dev", "files", "media", "0", "1", "2", "3"]
+myWorkspaces = ["main", "www", "dev", "sys", "med", "off", "vbx", "etc", "0"]
 
 -- Xmobar Colors
 blue, lowWhite, magenta, red, white, yellow :: String -> String
 magenta    = xmobarColor "#FF79C6" ""
-blue       = xmobarColor "#BD93F9" ""
+blue       = xmobarColor "#2196F3" ""
 white      = xmobarColor "#F8F8F2" ""
-yellow     = xmobarColor "#F1FA8C" ""
+yellow     = xmobarColor "#FFFF00" ""
 red        = xmobarColor "#FF5555" ""
 lowWhite   = xmobarColor "#BBBBBB" ""
+green      = xmobarColor "#87DC89" ""
+orange     = xmobarColor "#FFB327" ""
+
+-- GridSelect Config
+myGSConfig = def {
+  gs_cellheight = 100,
+  gs_cellwidth = 200,
+  gs_font = myFont
+}
+
+-- Prompt Config
+myPrompt :: XPConfig
+myPrompt = def {
+   Pmpt.font = myFont,
+   Pmpt.bgColor = "#161616",
+   Pmpt.fgColor = "#84B7E1",
+   Pmpt.fgHLight = "#1E1E1E",
+   Pmpt.bgHLight = "#69d36b",
+   Pmpt.borderColor = "#262626",
+   Pmpt.historySize = 0,
+   Pmpt.position = Top
+}
+
+-- Prompts
+promptList :: [(String, XPConfig -> X())]
+promptList = [("x", xmonadPrompt), ("m", manPrompt)]
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -98,6 +134,12 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
 
     -- TogglStrus
     ((modm, xK_b), sendMessage ToggleStruts),
+
+    -- Grid Select
+    ((modm, xK_Tab), goToSelected myGSConfig),
+
+    -- Prompts
+    ((modm .|. shiftMask, xK_b), xmonadPrompt myPrompt),
 
     -- Close focused window
     ((modm .|. shiftMask, xK_c), kill),
@@ -142,10 +184,10 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
     ((modm, xK_comma), sendMessage (IncMasterN 1)),
 
     -- Decrease the number of windows in the master area
-    ((modm, xK_period), sendMessage( (IncMasterN (-1)))),
+    ((modm, xK_period), sendMessage (IncMasterN (-1))),
 
     -- Quit XMonad
-    ((modm .|. shiftMask, xK_q), io (exitWith ExitSuccess)),
+    ((modm .|. shiftMask, xK_q), io exitSuccess),
 
     -- Restart XMonad
     ((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
@@ -159,6 +201,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..],
           (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+   -- Prompts
 
 myAddKeys :: [(String, X())]
 myAddKeys = [
@@ -179,7 +222,7 @@ myAddKeys = [
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| simpleTabbed ||| Full ||| twoPane ||| Mirror twoPane 
+myLayout = tiled ||| Mirror tiled ||| Grid ||| Full ||| twoPane ||| Mirror twoPane
     where
        -- default tiling algorithm partitions the screen into two panes
        tiled = Tall nmaster delta ration
@@ -210,7 +253,8 @@ myManageHook = composeAll
     [ className =? "MPlayer"         --> doFloat,
       className =? "Gimp"            --> doFloat,
       className =? "desktop_window"  --> doIgnore,
-      className =? "kdesktop"        --> doIgnore ]
+      className =? "kdesktop"        --> doIgnore,
+      (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat]
 
 --------------------------------------------------------------------------------------
 -- Main
@@ -222,12 +266,12 @@ main = do
          handleEventHook = fullscreenEventHook,
          logHook = dynamicLogWithPP $ xmobarPP {
                  ppOutput = hPutStrLn xmproc,
-                 ppCurrent = wrap (white "[") (white "]"),
-                 ppVisible = wrap (white "") (white ""),
-                 ppHidden = lowWhite . wrap "(" ")",
-                 ppHiddenNoWindows = blue . wrap " " "",
-                 ppTitle = xmobarColor "white" "" . shorten 50,
-                 ppSep = magenta " * ",
+                 ppCurrent = wrap (green "[") (green "]"),
+                 ppVisible = wrap (green "{") (green "}"),
+                 ppHidden = blue . wrap "(" ")",
+                 ppHiddenNoWindows = orange . wrap " " "",
+                 ppTitle = xmobarColor "white" "" . shorten 30,
+                 ppSep = magenta " | ",
                  ppUrgent = red . wrap (red "!") (red "!")
              },
          keys = myKeys,
@@ -238,5 +282,5 @@ main = do
          terminal = myTerminal,
          focusedBorderColor = focusedBColor,
          normalBorderColor = normalBColor,
-         borderWidth = border
+         borderWidth = Main.border
     } `additionalKeysP` myAddKeys
