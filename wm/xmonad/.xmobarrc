@@ -1,11 +1,11 @@
 Config {
     -- Appearance
     font =              "xft:Ubuntu Nerd Font:size=12:antialias=true",
+    additionalFonts = ["xft:Font Awesome 5 Free Solid:pixelsize=12"],
     bgColor =           "#161616",
     fgColor =           "#FFFFFF",
     position =          Top,
-    border =            BottomB,
-    borderColor =       "#646464",
+    border =            NoBorder,
 
     -- General Behaviour
     lowerOnStart =      True,       -- Send to bottom of window stack on start
@@ -16,34 +16,22 @@ Config {
     persistent =        True,       -- Enable/Disable hiding
 
     -- Plugins
-    --   Numbers can be automatically colored according to their value. xmobar
-    --   decides color based on a three-tier/two-cutoff system, controlled by
-    --   command options:
-    --     --Low sets the low cutoff
-    --     --High sets the high cutoff
-    --
-    --     --low sets the color below --Low cutoff
-    --     --normal sets the color between --Low and --High cutoffs
-    --     --High sets the color above --High cutoff
-    --
-    --   The --template option controls how the plugin is displayed. Text
-    --   color can be set by enclosing in <fc></fc> tags. For more details
-    --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
     commands = [
 		-- Time and Date
 		Run Date 			"<fc=#F1FA8C>%F %T</fc>" "date" 10,
-		-- Keyboard Layout
-		Run Kbd 			[ 	("es(qwerty)", "<fc=#00008B>QT</fc>"),
-								("us", "<fc=#8B0000>US</fc>")
-							],
-		Run UnsafeStdinReader,
-		Run Com "uname" ["-r"] "" 3600,
+        -- Kernel Version
+		Run Com "uname" ["-r"] "" 1800,
+        -- Volume
 		Run Alsa "default" "Master" [],
-        Run Locks
+        -- Num/Caps Lock
+        Run Locks,
+        -- Updates
+        Run CommandReader "~/.config/polybar/scripts/updates.sh" "upd",
+		Run UnsafeStdinReader
 	],
 
     -- Layout
     sepChar =   "%",        -- Delineator between plugin names and straight text
     alignSep =  "}{",       -- Separator between left-right alignment
-    template =  "%UnsafeStdinReader% | %kbd% }{ %alsa:default:Master% %uname% | %date% "
+    template =  "%UnsafeStdinReader% | <fc=#31A835><fn=2>   </fn>%locks%</fc> }{ <fc=#64B5F6><fn=2> </fn>%upd% </fc> | <fc=#FF3B3B><fn=2>  </fn>%uname% </fc> |  %alsa:default:Master% | %date% "
 }
