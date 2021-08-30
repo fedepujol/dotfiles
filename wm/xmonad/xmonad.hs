@@ -1,4 +1,3 @@
-{-#LANGUAGE NoMonomorphismRestriction #-}
 -- Imports
 -- General
 import XMonad
@@ -7,15 +6,16 @@ import System.IO
 import System.Exit
 
 -- Actions
-import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.GridSelect(GSConfig, goToSelected, gs_cellheight, gs_cellwidth, gs_font)
+import XMonad.Actions.WorkspaceNames
 
 -- Data
 import Data.Monoid
 import qualified Data.Map  as M
+import XMonad.Actions.Submap
 
 -- Utils
-import XMonad.Util.EZConfig (additionalKeysP)
+import XMonad.Util.EZConfig (additionalKeysP, checkKeymap)
 import XMonad.Util.Loggers
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
@@ -30,9 +30,11 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Grid
 
 -- Layout Modifiers
+import XMonad.Layout.LayoutModifier(ModifiedLayout)
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.NoBorders
-import XMonad.Layout.Spacing as SP
+import XMonad.Layout.Renamed(renamed, Rename(Replace))
+import XMonad.Layout.Spacing
 
 -- Prompt
 import XMonad.Prompt as Pmpt
@@ -107,141 +109,99 @@ myPrompt = def {
 promptList :: [(String, XPConfig -> X())]
 promptList = [("x", xmonadPrompt), ("m", manPrompt)]
 
+-- Spacing
+mySpacing :: Integer -> l a -> ModifiedLayout Spacing l a
+mySpacing n = spacingRaw True (Border n n n n) True (Border n n n n) True
+
 ------------------------------------------------------------------------
 -- Startup hook
 
 -- Perform an arbitrary action each time xmonad starts or is restarted
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
---
--- By default, do nothing.
---
--- * NOTE: EwmhDesktops users should use the 'ewmh' function from
--- XMonad.Hooks.EwmhDesktops to modify their defaultConfig as a whole.
--- It will add initialization of EWMH support to your custom startup
--- hook by combining it with ewmhDesktopsStartup.
 myStartupHook = do
    spawnOnce "nitrogen --restore &"
 
 --------------------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove here.
-myKeys conf@XConfig {XMonad.modMask = modm} = M.fromList $ [
-    -- Launch Terminal
-    ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf),
-
-    -- Launch DMenu
-    ((modm, xK_p), spawn "~/.config/bspwm/dmenu.sh"),
-
-    -- TogglStrus
-    ((modm, xK_b), sendMessage ToggleStruts),
-
-    -- Grid Select
-    ((modm, xK_Tab), goToSelected myGSConfig),
-
-    -- Prompts
-    ((modm .|. shiftMask, xK_b), xmonadPrompt myPrompt),
-
-    -- Close focused window
-    ((modm .|. shiftMask, xK_c), kill),
-
-    -- Rotate through the available layouts
-    ((modm, xK_space), sendMessage NextLayout),
-
-    -- Reset the layouts on the current workspace to default
-    ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf),
-
-    -- Resize viewed windows to the correct size
-    ((modm, xK_n), refresh),
-
-    -- Move focus to the next window
-    ((modm, xK_j), windows W.focusDown),
-
-    -- Move focus to the previous window
-    ((modm, xK_k), windows W.focusUp),
-
-    -- Move focus to the Master window
-    ((modm, xK_Return), windows W.focusMaster),
-
-    -- Swap the focused window and the master window
-    ((modm, xK_Return), windows W.swapMaster),
-
-    -- Swap the focused window with the next one
-    ((modm .|. shiftMask, xK_j), windows W.swapDown),
-
-    -- Swap the focused window with the previous one
-    ((modm .|. shiftMask, xK_k), windows W.swapUp),
-
-    -- Shrink the master area
-    ((modm, xK_h), sendMessage Shrink),
-
-    -- Expand the master area
-    ((modm, xK_l), sendMessage Expand),
-
-    -- Push window back into tiling
-    ((modm, xK_t), withFocused $ windows . W.sink),
-
-    -- Increment the number of windows in the master area
-    ((modm, xK_comma), sendMessage (IncMasterN 1)),
-
-    -- Decrease the number of windows in the master area
-    ((modm, xK_period), sendMessage (IncMasterN (-1))),
-
-    -- Quit XMonad
-    ((modm .|. shiftMask, xK_q), io exitSuccess),
-
-    -- Restart XMonad
-    ((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
-   ] ++
-   -- Swith Workspaces
-   [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9],
-          (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
-   ] ++
-   -- Switch to physical Xinerama
-   [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..],
-          (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-   -- Prompts
-
-myAddKeys :: [(String, X())]
-myAddKeys = [
+myKeys :: [(String, X())]
+myKeys = [
+    -- XMonad
+    ("M-q", spawn "xmonad --recompile; xmonad --restart"),  -- Re-Compiles and Re-starts XMonad
+    ("M-S-q", io exitSuccess),                              -- Exit XMonad
+    -- DMenu
+    ("M-p", spawn "~/.config/dmenu/dmenu.sh"),              -- Launch DMenu
+    -- GridSelect
+    ("M-<Tab>", goToSelected myGSConfig),                   -- Launch Custom GridSelect
+    -- Spacing 
+    ("M-s +", incScreenSpacing 2),                          -- Increase Screen border
+    ("M-s -", decScreenSpacing 2),                          -- Decrease Screen border
+    -- Docks
+    ("M-b", sendMessage ToggleStruts),                      -- Toggle Docks (XMobar) on/off
+    -- Layouts
+    ("M-<Space>", sendMessage NextLayout),                  -- Change layouts
+    ("M-n", refresh),                                       -- Reset layout to default
+    -- Lock
+    ("M-l", spawn "screensaver-command -lock"),
+    -- Window Management
+    ("M-j", windows W.focusDown),                           -- Move focus to next window
+    ("M-k", windows W.focusUp),                             -- Move focus to previous window
+    ("M-<Return>", windows W.swapMaster),                   -- Swap focus window with master
+    ("M-S-j", windows W.swapDown),                          -- Swap focused window with next one 
+    ("M-S-k", windows W.swapUp),                            -- Swap focused window with previous one
+    ("M-S-c", kill),                                        -- Kill focused window
+    ("M-h", sendMessage Shrink),                            -- Shrink focused window to the left
+    ("M-l", sendMessage Expand),                            -- Expand focused window to the right
+    ("M-,", sendMessage (IncMasterN 1)),                    -- Increase number of master windows 
+    ("M-.", sendMessage (IncMasterN (-1))),                 -- Decrease number of master windows
+    -- MediaKeys
     ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"),
     ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"),
     ("<XF86AudioMute>", spawn "amixer -q set Master toggle"),
-    ("<XF86MonBrightnessUp>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -inc 5"),
-    ("<XF86MonBrightnessDown>", spawn "python $HOME/workspace/python/xbacli/xbacli.py -dec 5")]
+    ("<XF86MonBrightnessUp>", spawn "python ~/.config/scripts/xbacli/xbacli.py -inc 5"),
+    ("<XF86MonBrightnessDown>", spawn "python ~/.config/scripts/xbacli/xbacli.py -dec 5")]
+    -- Prompts
+    ++ [("M-C-p " ++ k, p myPrompt) | (k, p) <- promptList]
 
 --------------------------------------------------------------------------------------
 -- Layouts
 
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
---
-myLayout = tiled ||| Mirror tiled ||| Grid ||| Full ||| twoPane ||| Mirror twoPane
-    where
-       -- default tiling algorithm partitions the screen into two panes
-       tiled = Tall nmaster delta ration
-       twoPane = TwoPane delta ration
-       -- The default number of windows in the master pane
-       nmaster = 1
-       -- Default proportion of screen occupied by master pane
-       ration = 1 / 2
-       -- Percent of screen to increment by when resizing panes
-       delta = 3 / 300
+-- The default number of windows in the master pane
+nmaster :: Int
+nmaster = 1
+
+-- Percent of screen to increment by when resizing panes
+delta :: Rational 
+delta = 3 / 300
+
+-- Default proportion of screen occupied by master pane
+ration :: Rational 
+ration = 1 / 2
+
+-- Tall
+tall :: ModifiedLayout Rename (ModifiedLayout Spacing Tall) a
+tall = renamed [Replace "Tall"] $
+    mySpacing 5 (Tall nmaster delta ration)
+
+-- Mirror Tall
+mTall :: Mirror (ModifiedLayout Rename (ModifiedLayout Spacing Tall)) a
+mTall = Mirror tall 
+
+-- TwoPane
+twoPane :: ModifiedLayout Rename (ModifiedLayout Spacing TwoPane) a
+twoPane = renamed [Replace "TwoPane"] $
+    mySpacing 5 (TwoPane delta ration)
+
+-- Mirror TwoPane
+mTwoPane :: Mirror (ModifiedLayout Rename (ModifiedLayout Spacing TwoPane)) a
+mTwoPane = Mirror twoPane
+
+-- Available layouts
+myLayout = tall ||| mTall ||| Grid ||| Full ||| twoPane ||| mTwoPane
 
 --------------------------------------------------------------------------------------
 -- Window Rules:
 
--- Execute arbitrary actions and WindowSet manipulations when managing
--- a new window. You can use this to, for example, always float a
--- particular program, or have a client always appear on a particular
--- workspace.
---
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
 -- and click on the client you're interested in.
@@ -274,7 +234,6 @@ main = do
                  ppSep = magenta " | ",
                  ppUrgent = red . wrap (red "!") (red "!")
              },
-         keys = myKeys,
          workspaces = myWorkspaces,
          manageHook = myManageHook,
          modMask = myModMask,
@@ -283,4 +242,4 @@ main = do
          focusedBorderColor = focusedBColor,
          normalBorderColor = normalBColor,
          borderWidth = Main.border
-    } `additionalKeysP` myAddKeys
+    } `additionalKeysP` myKeys 
