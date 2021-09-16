@@ -12,6 +12,10 @@ if [[ -z "$XDG_CACHE_HOME" ]]; then
     export XDG_CACHE_HOME="$HOME/.cache"
 fi
 
+if [[ -z "$ZSH_PLUGGIN" ]]; then
+	export ZSH_PLUGGIN="$XDG_CONFIG_HOME/zsh/pluggins/"
+fi
+
 # Set editor to NeoVim
 export EDITOR='nvim'
 
@@ -23,6 +27,7 @@ export ZSH_HOME="$XDG_CONFIG_HOME/zsh"
 # alias.zsh -> Usefull aliases
 [ -f $ZSH_HOME/functions.zsh ] && source $ZSH_HOME/functions.zsh
 [ -f $ZSH_HOME/alias.zsh ] && source $ZSH_HOME/alias.zsh
+[ -f $ZSH_HOME/pluggin.zsh ] && source $ZSH_HOME/pluggin.zsh
 
 # ZSh Config
 
@@ -61,5 +66,5 @@ bindkey -v
 # Prompt
 PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
 
-# Source files
- source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Pluggins
+load 'zsh-users/zsh-syntax-highlighting'

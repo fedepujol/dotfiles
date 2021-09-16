@@ -9,8 +9,8 @@
  alias diskusage='du -P -S -h | sort -n | tail -n 20'
 
 # Sourcing Aliases
- alias soz='source .zshrc'
- alias sob='source .bashrc'
+ alias srcz='source .zshrc'
+ alias srcb='source .bashrc'
 
 # Command Aliases
  alias mv='mv -i'
@@ -23,6 +23,7 @@
  alias ll='ls -a --group-directories-first --color=always'
  alias bbu='bleachbit -c system.tmp system.cache system.trash system.localizations vim.history firefox.backup firefox.cache firefox.cookies firefox.crash_reports firefox.dom firefox.forms firefox.passwords firefox.session_restore firefox.site_preferences firefox.url_history firefox.vacuum bash.history'
  alias bbr='sudo bleachbit -c system.tmp system.cache system.trash system.localizations system.rotated_logs system.clipboard vim.history bash.history'
+ alias ip='ip -c a'
 
 # Package Aliases
 # Pacman
@@ -40,7 +41,7 @@
  alias orphans='sudo pacman -Qtdt'
 
 # Config Aliases
- alias aliases='$EDITOR ~/.zshrc'
+ alias aliases='$EDITOR ~/.config/zsh/alias.zsh'
  alias nvim-conf='cd ~/.config/nvim && $EDITOR'
 
 # BSPWM Aliases
