@@ -12,8 +12,8 @@ if [[ -z "$XDG_CACHE_HOME" ]]; then
     export XDG_CACHE_HOME="$HOME/.cache"
 fi
 
-if [[ -z "$ZSH_PLUGGIN" ]]; then
-	export ZSH_PLUGGIN="$XDG_CONFIG_HOME/zsh/pluggins/"
+if [[ -z "$ZSH_PLUGIN" ]]; then
+	export ZSH_PLUGIN="$XDG_CONFIG_HOME/zsh/plugins/"
 fi
 
 # Set editor to NeoVim
@@ -27,7 +27,7 @@ export ZSH_HOME="$XDG_CONFIG_HOME/zsh"
 # alias.zsh -> Usefull aliases
 [ -f $ZSH_HOME/functions.zsh ] && source $ZSH_HOME/functions.zsh
 [ -f $ZSH_HOME/alias.zsh ] && source $ZSH_HOME/alias.zsh
-[ -f $ZSH_HOME/pluggin.zsh ] && source $ZSH_HOME/pluggin.zsh
+[ -f $ZSH_HOME/plugin.zsh ] && source $ZSH_HOME/plugin.zsh
 
 # ZSh Config
 

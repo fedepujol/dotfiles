@@ -23,6 +23,7 @@ import XMonad.Util.SpawnOnce
 -- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers(doCenterFloat)
 
 -- Layouts
 import XMonad.Layout.TwoPane
@@ -72,7 +73,7 @@ focusedBColor = "#1F3D7E"
 
 -- List of workspaces
 myWorkspaces :: [String]
-myWorkspaces = ["main", "www", "dev", "sys", "med", "off", "vbx", "etc", "0"]
+myWorkspaces = ["main", "www", "dev", "sys", "med", "off", "virt", "etc", "0"]
 
 -- Xmobar Colors
 blue, lowWhite, magenta, red, white, yellow :: String -> String
@@ -124,26 +125,28 @@ myStartupHook = do
 
 --------------------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove here.
+-- KEY_START
 myKeys :: [(String, X())]
 myKeys = [
-    -- XMonad
+    -- GROUP XMonad
     ("M-q", spawn "xmonad --recompile; xmonad --restart"),  -- Re-Compiles and Re-starts XMonad
     ("M-S-q", io exitSuccess),                              -- Exit XMonad
-    -- DMenu
+    ("M-C-h", spawn "~/.xmonad/keys_helper.sh"),                  -- Prints Help
+    -- GROUP DMenu
     ("M-p", spawn "~/.config/dmenu/dmenu.sh"),              -- Launch DMenu
-    -- GridSelect
+    -- GROUP GridSelect
     ("M-<Tab>", goToSelected myGSConfig),                   -- Launch Custom GridSelect
-    -- Spacing 
+    -- GROUP Spacing 
     ("M-s +", incScreenSpacing 2),                          -- Increase Screen border
     ("M-s -", decScreenSpacing 2),                          -- Decrease Screen border
-    -- Docks
+    -- GROUP Dock Management
     ("M-b", sendMessage ToggleStruts),                      -- Toggle Docks (XMobar) on/off
-    -- Layouts
+    -- GROUP Layouts
     ("M-<Space>", sendMessage NextLayout),                  -- Change layouts
     ("M-n", refresh),                                       -- Reset layout to default
-    -- Lock
-    ("M-l", spawn "screensaver-command -lock"),
-    -- Window Management
+    -- GROUP Screen Lock
+    ("M-l", spawn "screensaver-command -lock"),             -- Lock Screen
+    -- GROUP Window Management
     ("M-j", windows W.focusDown),                           -- Move focus to next window
     ("M-k", windows W.focusUp),                             -- Move focus to previous window
     ("M-<Return>", windows W.swapMaster),                   -- Swap focus window with master
@@ -154,15 +157,17 @@ myKeys = [
     ("M-l", sendMessage Expand),                            -- Expand focused window to the right
     ("M-,", sendMessage (IncMasterN 1)),                    -- Increase number of master windows 
     ("M-.", sendMessage (IncMasterN (-1))),                 -- Decrease number of master windows
-    -- MediaKeys
-    ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"),
-    ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"),
-    ("<XF86AudioMute>", spawn "amixer -q set Master toggle"),
-    ("<XF86MonBrightnessUp>", spawn "python ~/.config/scripts/xbacli/xbacli.py -inc 5"),
-    ("<XF86MonBrightnessDown>", spawn "python ~/.config/scripts/xbacli/xbacli.py -dec 5")]
-    -- Prompts
-    ++ [("M-C-p " ++ k, p myPrompt) | (k, p) <- promptList]
-
+    -- GROUP MediaKeys
+    ("<XF86AudioLowerVolume>", spawn "amixer -q set Master 5%-"), -- Increase volume
+    ("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 5%+"), -- Decrease volume
+    ("<XF86AudioMute>", spawn "amixer -q set Master toggle"), -- Mute/Unmute sound
+    ("<XF86MonBrightnessUp>", spawn "python ~/.config/scripts/xbacli/xbacli.py -inc 5"), -- Increase brightness
+    ("<XF86MonBrightnessDown>", spawn "python ~/.config/scripts/xbacli/xbacli.py -dec 5") -- Decrease brightness
+    ]
+    -- GROUP Prompts
+    ++ [("M-C-p " ++ k, p myPrompt) | (k, p) <- promptList -- Select from: Man, Xmonad
+    ]
+-- KEY_END
 --------------------------------------------------------------------------------------
 -- Layouts
 
@@ -214,7 +219,10 @@ myManageHook = composeAll
       className =? "Gimp"            --> doFloat,
       className =? "desktop_window"  --> doIgnore,
       className =? "kdesktop"        --> doIgnore,
-      (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat]
+      className =? "Yad"             --> doCenterFloat,
+      (className =? "Firefox" <&&> resource =? "Dialog") --> doFloat,
+      title =? "Library" --> doFloat,
+      resource =? "Extension" --> doFloat]
 
 --------------------------------------------------------------------------------------
 -- Main
