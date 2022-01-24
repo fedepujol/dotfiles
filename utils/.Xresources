@@ -7,38 +7,43 @@ Xft.hintstyle:  hintfull
 Xft.lcdfilter:	lcdfilter
 
 !! Colorscheme
-*.foreground:  #e6d4a3
-*.background:  #1e1e1e
-*.cursorColor: #bbbbbb
+*.foreground:  #E0E0E0
+*.background:  #212121
+*.cursorColor: #B0B0B0
 
 ! Black
 *.color0:      #161819
 *.color8:      #7f7061
 
 ! Red
-*.color1:      #f73028
-*.color9:      #be0f17
+*.color1:      #D84315
+*.color9:      #FF5722
 
 ! Green
-*.color2:      #aab01e
-*.color10:     #868715
+*.color2:      #00c853
+*.color10:     #2e7d32
 
 ! Yellow
-*.color3:      #f7b125
-*.color11:     #cc881a
+*.color3:      #ffff8d
+*.color11:     #f9a825
 
 ! Blue
-*.color4:      #719586
-*.color12:     #377375
+*.color4:      #90caf9
+*.color12:     #1976d3
 
 ! Magenta
-*.color5:      #c77089
-*.color13:     #a04b73
+*.color5:      #f8bbd9
+*.color13:     #f06292
 
 ! Cyan
-*.color6:      #7db669
-*.color14:     #578e57
+*.color6:      #80deea
+*.color14:     #00838f
 
 ! White
-*.color7:      #faefbb
-*.color15:     #e6d4a3
+*.color7:      #e1e1e1
+*.color15:     #ffffff
+
+!! Xterm
+xterm*faceName: Ubuntu Nerd Mono 
+xterm*faceSize: 12
+xterm*renderFont: true
