@@ -24,6 +24,8 @@ import XMonad.Util.SpawnOnce
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers(doCenterFloat)
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
 -- Layouts
 import XMonad.Layout.TwoPane
@@ -85,6 +87,21 @@ red        = xmobarColor "#FF5555" ""
 lowWhite   = xmobarColor "#BBBBBB" ""
 green      = xmobarColor "#87DC89" ""
 orange     = xmobarColor "#FFB327" ""
+
+myXmobarPP :: PP
+myXmobarPP = def { 
+  ppSep = magenta " | ",
+  ppTitleSanitize = xmobarStrip,
+  ppCurrent = wrap (green "[") (green "]"),
+  ppHidden = blue . wrap "(" ")",
+  ppHiddenNoWindows = orange . wrap " " "",
+  ppUrgent = red . wrap (red "!") (red "!"),
+  ppOrder = \[ws, l, _, wins] -> [ws, l, wins],
+  ppExtras = [logTitles ppWindow ppWindow]
+}
+ where
+  ppWindow :: String -> String 
+  ppWindow = xmobarRaw . (\w -> if null w then "Untitled" else w) . shorten 30
 
 -- GridSelect Config
 myGSConfig = def {
@@ -225,29 +242,23 @@ myManageHook = composeAll
       resource =? "Extension" --> doFloat]
 
 --------------------------------------------------------------------------------------
+-- Xmonad Config 
+myConfig = def {
+  layoutHook = smartBorders . avoidStruts $ myLayout,
+  handleEventHook = fullscreenEventHook,
+  workspaces = myWorkspaces,
+  manageHook = myManageHook,
+  modMask = myModMask,
+  startupHook = myStartupHook,
+  terminal = myTerminal,
+  focusedBorderColor = focusedBColor,
+  normalBorderColor = normalBColor,
+  borderWidth = Main.border
+} `additionalKeysP` myKeys 
+
 -- Main
 main :: IO()
 main = do
-  xmproc <- spawnPipe "xmobar ~/.config/xmobar/.xmobarrc"
-  xmonad $ docks $ fullscreenSupport def {
-         layoutHook = smartBorders . avoidStruts $ myLayout,
-         handleEventHook = fullscreenEventHook,
-         logHook = dynamicLogWithPP $ xmobarPP {
-                 ppOutput = hPutStrLn xmproc,
-                 ppCurrent = wrap (green "[") (green "]"),
-                 ppVisible = wrap (green "{") (green "}"),
-                 ppHidden = blue . wrap "(" ")",
-                 ppHiddenNoWindows = orange . wrap " " "",
-                 ppTitle = xmobarColor "white" "" . shorten 30,
-                 ppSep = magenta " | ",
-                 ppUrgent = red . wrap (red "!") (red "!")
-             },
-         workspaces = myWorkspaces,
-         manageHook = myManageHook,
-         modMask = myModMask,
-         startupHook = myStartupHook,
-         terminal = myTerminal,
-         focusedBorderColor = focusedBColor,
-         normalBorderColor = normalBColor,
-         borderWidth = Main.border
-    } `additionalKeysP` myKeys 
+  xmonad .
+    withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey $
+     myConfig

@@ -26,12 +26,12 @@ Config {
         -- Num/Caps Lock
         Run Locks,
         -- Updates
-        Run CommandReader "~/.config/polybar/scripts/updates.sh" "upd",
-		Run UnsafeStdinReader
+        Run CommandReader "~/.config/scripts/updates.sh" "upd",
+		Run XMonadLog 
 	],
 
     -- Layout
     sepChar =   "%",        -- Delineator between plugin names and straight text
     alignSep =  "}{",       -- Separator between left-right alignment
-    template =  "%UnsafeStdinReader% | <fc=#31A835><fn=2>   </fn>%locks%</fc> }{ <fc=#64B5F6><fn=2> </fn>%upd% </fc> | <fc=#FF3B3B><fn=2>  </fn>%uname% </fc> |  %alsa:default:Master% | %date% "
+    template =  "%XMonadLog% | <fc=#31A835><fn=2>   </fn>%locks%</fc> }{ <fc=#64B5F6><fn=2> </fn>%upd% </fc> | <fc=#FF3B3B><fn=2>  </fn>%uname% </fc> |  %alsa:default:Master% | %date% "
 }
