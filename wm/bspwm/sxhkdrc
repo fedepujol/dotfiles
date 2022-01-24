@@ -7,8 +7,8 @@ super + Return
 	alacritty
 
 # program launcher
-super + @space
-	$HOME/.config/bspwm/dmenu.sh
+super + @space 
+	$HOME/.config/dmenu/dmenu.sh
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -36,11 +36,11 @@ XF86AudioMute
 
 # Increase +5%
 XF86MonBrightnessUp
-	python $HOME/workspace/python/xbacli/xbacli.py -inc 5
+	python $HOME/.config/scripts/xbacli/xbacli.py -inc 5
 
 # Decrease -5%
 XF86MonBrightnessDown
-	python $HOME/workspace/python/xbacli/xbacli.py -dec 5
+	python $HOME/.config/scripts/xbacli/xbacli.py -dec 5
 
 
 #
@@ -48,7 +48,7 @@ XF86MonBrightnessDown
 #
 
 # quit/restart bspwm
-super + alt + {q,r}
+super + shift + {q,r}
 	bspc {quit,wm -r}
 
 # Close Window
