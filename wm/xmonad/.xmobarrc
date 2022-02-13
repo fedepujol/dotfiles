@@ -18,11 +18,14 @@ Config {
     -- Plugins
     commands = [
 		-- Time and Date
-		Run Date 			"<fc=#F1FA8C>%F %T</fc>" "date" 10,
+        Run Com "date" ["+%Y-%m-%d"] "myDate" 0,
+        Run Com "date" ["+%H:%M:%S"] "myTime" 10,
         -- Kernel Version
-		Run Com "uname" ["-r"] "" 1800,
+		Run Com "uname" ["-r"] "" 0,
         -- Volume
 		Run Alsa "default" "Master" [],
+        -- Brightness
+        Run Brightness ["-t", "<percent>%", "--", "-D", "/sys/class/backlight/intel_backlight"] 60,
         -- Num/Caps Lock
         Run Locks,
         -- Updates
@@ -33,5 +36,5 @@ Config {
     -- Layout
     sepChar =   "%",        -- Delineator between plugin names and straight text
     alignSep =  "}{",       -- Separator between left-right alignment
-    template =  "%XMonadLog% | <fc=#31A835><fn=2>   </fn>%locks%</fc> }{ <fc=#64B5F6><fn=2> </fn>%upd% </fc> | <fc=#FF3B3B><fn=2>  </fn>%uname% </fc> |  %alsa:default:Master% | %date% "
+    template =  "%XMonadLog% | <fc=#31A835><fn=2>   </fn>%locks%</fc> }{ <fc=#64B5F6><fn=2> </fn>%upd% </fc> | <fc=#FF3B3B><fn=2>  </fn>%uname% </fc> |  %alsa:default:Master% | <fn=2>盛</fn> %bright% | <fc=#C4C400><fn=2></fn> %myDate%</fc> <fc=#96E098><fn=2></fn> %myTime%</fc> "
 }
