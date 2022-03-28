@@ -22,12 +22,21 @@ export EDITOR='nvim'
 # Define zsh directory
 export ZSH_HOME="$XDG_CONFIG_HOME/zsh"
 
+# Nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
 # Source configuration files
 # functions.zsh -> Common functions
 # alias.zsh -> Usefull aliases
 [ -f $ZSH_HOME/functions.zsh ] && source $ZSH_HOME/functions.zsh
 [ -f $ZSH_HOME/alias.zsh ] && source $ZSH_HOME/alias.zsh
 [ -f $ZSH_HOME/plugin.zsh ] && source $ZSH_HOME/plugin.zsh
+
+# Java
+export JAVA_HOME="$HOME/sdkman/candidates/java/8.0.302-open/bin/java"
+export QT_QPA_PLATFORMTHEME=qt5ct
 
 # ZSh Config
 
@@ -68,3 +77,7 @@ PROMPT='%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f %# '
 
 # Pluggins
 load 'zsh-users/zsh-syntax-highlighting'
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
