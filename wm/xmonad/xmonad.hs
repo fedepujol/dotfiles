@@ -53,7 +53,7 @@ myFont = "xft:Ubuntu Nerd Font:size=12:antialias=true"
 
 -- By Default is XTerm
 myTerminal :: String
-myTerminal = "alacritty"
+myTerminal = "kitty"
 
 -- ModMask lets you specify which modkey you want to use. 
 -- The default is mod1Mask ("left alt"). 
@@ -148,9 +148,8 @@ myKeys = [
     -- GROUP XMonad
     ("M-q", spawn "xmonad --recompile; xmonad --restart"),  -- Re-Compiles and Re-starts XMonad
     ("M-S-q", io exitSuccess),                              -- Exit XMonad
-    ("M-C-h", spawn "~/.xmonad/keys_helper.sh"),                  -- Prints Help
     -- GROUP DMenu
-    ("M-p", spawn "~/.config/dmenu/dmenu.sh"),              -- Launch DMenu
+    ("M-p", spawn "rofi -show"),                            -- Launch Rofi
     -- GROUP GridSelect
     ("M-<Tab>", goToSelected myGSConfig),                   -- Launch Custom GridSelect
     -- GROUP Spacing 
