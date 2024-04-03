@@ -1,0 +1,72 @@
+local colors = {
+	foreground = "#E5F3FA",
+	background = "#131B25",
+	split = "#2D4F67",
+	red = "#FF5D62",
+	green = "#95C561",
+	cyan = "#71BAF2",
+	pink = "#ECB2F0",
+	teal = "#4DB5BD",
+	teal2 = "#2DF4C0",
+	grey = "#B0BEC5",
+	grey2 = "#7C8083",
+	blue = "#1C4474",
+	purple = "#D67AD2",
+	yellow = "#F9E2AF",
+	black = "#1E2326",
+	black2 = "#000000",
+}
+
+return {
+	foreground = colors.foreground,
+	background = colors.background,
+	cursor_bg = colors.green,
+	cursor_border = colors.teal,
+	cursor_fg = colors.background,
+	selection_bg = colors.yellow,
+	selection_fg = colors.background,
+	split = colors.split,
+	ansi = {
+		colors.grey,
+		colors.red,
+		colors.green,
+		colors.yellow,
+		colors.cyan,
+		colors.pink,
+		colors.teal,
+		colors.grey2,
+	},
+	brights = {
+		colors.grey2,
+		colors.red,
+		colors.green,
+		colors.yellow,
+		colors.cyan,
+		colors.purple,
+		colors.teal,
+		colors.grey,
+	},
+	tab_bar = {
+		background = colors.black,
+		active_tab = {
+			bg_color = colors.background,
+			fg_color = colors.cyan,
+		},
+		inactive_tab = {
+			bg_color = colors.purple,
+			fg_color = colors.black2,
+		},
+		inactive_tab_hover = {
+			bg_color = colors.black2,
+			fg_color = colors.purple,
+		},
+		new_tab = {
+			bg_color = colors.black,
+			fg_color = colors.green,
+		},
+		new_tab_hover = {
+			bg_color = colors.green,
+			fg_color = colors.black2,
+		},
+	},
+}
