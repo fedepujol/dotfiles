@@ -14,7 +14,7 @@ local colors = {
 	purple = "#D67AD2",
 	yellow = "#F9E2AF",
 	black = "#1E2326",
-	black2 = "#000000",
+	pure_black = "#000000",
 }
 
 return {
@@ -53,12 +53,12 @@ return {
 			fg_color = colors.cyan,
 		},
 		inactive_tab = {
-			bg_color = colors.purple,
-			fg_color = colors.black2,
+			bg_color = colors.split,
+			fg_color = colors.black,
 		},
 		inactive_tab_hover = {
-			bg_color = colors.black2,
-			fg_color = colors.purple,
+			bg_color = colors.split,
+			fg_color = colors.teal,
 		},
 		new_tab = {
 			bg_color = colors.black,
@@ -66,7 +66,7 @@ return {
 		},
 		new_tab_hover = {
 			bg_color = colors.green,
-			fg_color = colors.black2,
+			fg_color = colors.pure_black,
 		},
 	},
 }

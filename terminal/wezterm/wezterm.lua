@@ -1,15 +1,9 @@
 local wezterm = require("wezterm")
 local colors = require("colors")
-local launch = require("settings.launch")
+local settings = require("settings")
 
-local mux = wezterm.mux
-
-require("settings.tab").setup()
-
-wezterm.on("gui-startup", function(cmd)
-	local _, _, window = mux.spawn_window(cmd or {})
-	window:gui_window():maximize()
-end)
+require("events.format-tab-title")
+require("events.gui-startup")
 
 return {
 	-- Font
@@ -19,6 +13,9 @@ return {
 	}),
 	font_size = 11,
 	warn_about_missing_glyphs = false,
+
+	-- Keys
+	keys = settings.keys,
 
 	-- Tabs
 	hide_tab_bar_if_only_one_tab = false,
@@ -39,10 +36,9 @@ return {
 	enable_scroll_bar = true,
 
 	-- Shell
-	launch_menu = launch.launch_menu,
-	default_prog = launch.shell,
+	launch_menu = settings.launch.launch_menu,
+	default_prog = settings.launch.shell,
 
 	-- Theme
 	colors = colors,
 }
-

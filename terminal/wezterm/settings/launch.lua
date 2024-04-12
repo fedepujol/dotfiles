@@ -4,15 +4,16 @@ local shell = {}
 local launch_menu = {}
 
 if utils.is_windows then
+	local bash = { os.getenv("LOCALAPPDATA") .. "/programs/Git/bin/bash.exe" }
 	launch_menu = {
-		{ label = "PowerShell", args = { "powershell", "-NoLogo" } },
-		{ label = "Command Prompt", args = { "cmd" } },
 		{
 			label = "Git Bash",
-			args = { os.getenv("LOCALAPPDATA") .. "/programs/Git/bin/bash.exe" },
+			args = bash,
 		},
+		{ label = "PowerShell", args = { "powershell", "-NoLogo" } },
+		{ label = "Command Prompt", args = { "cmd" } },
 	}
-	shell = { os.getenv("LOCALAPPDATA") .. "/programs/Git/bin/bash.exe" }
+	shell = bash
 elseif utils.is_linux then
 	launch_menu = {
 		{ label = "ZSh", args = { "zsh" } },
